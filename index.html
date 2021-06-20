@@ -5,109 +5,130 @@
 <link href="style.css" rel="stylesheet" type="text/css">
 <script type="text/javascript">
 var counter = 0;
-var html5_audiotypes={
-	"mp3": "audio/mpeg",
-	"mp4": "audio/mp4",
-	"ogg": "audio/ogg",
-	"wav": "audio/wav"
-}
-var mirrorBreak=createsoundbite("mirrorBreak.mp3")
-var glassBreak=createsoundbite("glassBreak.mp3")
-var woodBreak=createsoundbite("woodBreak.mp3")
+var html5_audiotypes = {
+	mp3: 'audio/mpeg',
+	mp4: 'audio/mp4',
+	ogg: 'audio/ogg',
+	wav: 'audio/wav',
+};
 
-function createsoundbite(sound){
-	var html5audio=document.createElement('audio')
-	if (html5audio.canPlayType){ //check support for HTML5 audio
-		for (var i=0; i<arguments.length; i++){
-			var sourceel=document.createElement('source')
-			sourceel.setAttribute('src', arguments[i])
+function reloadPage() {
+	location.reload();
+}
+
+function createsoundbite(sound) {
+	var html5audio = document.createElement('audio');
+	if (html5audio.canPlayType) {
+		//check support for HTML5 audio
+		for (var i = 0; i < arguments.length; i++) {
+			var sourceel = document.createElement('source');
+			sourceel.setAttribute('src', arguments[i]);
 			if (arguments[i].match(/\.(\w+)$/i))
-				sourceel.setAttribute('type', html5_audiotypes[RegExp.$1])
-			html5audio.appendChild(sourceel)
+				sourceel.setAttribute('type', html5_audiotypes[RegExp.$1]);
+			html5audio.appendChild(sourceel);
 		}
-		html5audio.load()
-		html5audio.playclip=function(){
-			html5audio.pause()
-			html5audio.currentTime=0
-			html5audio.play()
-		}
-		return html5audio
+		html5audio.load();
+		html5audio.playclip = function () {
+			html5audio.pause();
+			html5audio.currentTime = 0;
+			html5audio.play();
+		};
+		return html5audio;
+	} else {
+		return {
+			playclip: function () {
+				throw new Error("Your browser doesn't support HTML5!");
+			},
+		};
 	}
-	else{
-		return {playclip:function(){throw new Error("Your browser doesn't support HTML5!")}}
-	}
+}
+
+var sounds = {
+	0: createsoundbite('audio/mirrorBreak.mp3'),
+	1: createsoundbite('audio/glassBreak.mp3'),
+	2: createsoundbite('audio/woodBreak.mp3'),
+};
+
+function getRandomInt(max) {
+	return Math.floor(Math.random() * max);
 }
 
 function changeImage(identifier, image) {
-    document.getElementById(identifier).src=image;
-    counter++;
-    if(counter==3)
-     document.getElementById("end").innerHTML="<img onclick=reloadPage() src=again.png>";
+	if (document.getElementById(identifier).src.indexOf('shatter') > -1) {
+		// already shattered, no need to do anything
+		return;
+	}
+	// play random sound
+	document.getElementById(identifier).src = image;
+	sounds[getRandomInt(3)].playclip();
+	counter++;
+	if (counter == 3) {
+		document.getElementById('end').innerHTML =
+			"<img onclick=reloadPage() src='img/again.png' class='again'>";
+	}
 }
-
-function reloadPage()  {location.reload(); }
 </script>
 </head>
 
 <body>
 <div class="header">
-	<img src="logo.png">
+	<img src="img/logo.png">
 </div>
 <div class="container">
 	<p>
-	<a onclick="glassBreak.playclip()"><img src="blueL1.png" id="blueL1" onclick="changeImage('blueL1', 'shatterBlueL.png')" height="100px" width="100px" /></a>
+	<a onclick="changeImage('blueL1', 'img/shatterBlueL.png')"><img src="img/blueL1.png" id="blueL1"  height="100px" width="100px" /></a>
 
-	<a onclick="woodBreak.playclip()"><img src="magentaR1.png" id="magentaR1" onclick="changeImage('magentaR1', 'shatterMagentaR.png')" height="100px" width ="100px"/></a>
+	<a onclick="changeImage('magentaR1', 'img/shatterMagentaR.png')"><img src="img/magentaR1.png" id="magentaR1"  height="100px" width ="100px"/></a>
 
-	<a onclick="mirrorBreak.playclip()"><img src="orangeL2.png" id="orangeL2" onclick="changeImage('orangeL2', 'shatterOrangeL.png')" height="125px" width ="125px"/></a>
+	<a onclick="changeImage('orangeL2', 'img/shatterOrangeL.png')"><img src="img/orangeL2.png" id="orangeL2"  height="125px" width ="125px"/></a>
 
-	<a onclick="glassBreak.playclip()"><img src="pinkR1.png" id="pinkR1" onclick="changeImage('pinkR1', 'shatterPinkR.png')" height="100px" width ="100px"/></a>
+	<a onclick="changeImage('pinkR1', 'img/shatterPinkR.png')"><img src="img/pinkR1.png" id="pinkR1"  height="100px" width ="100px"/></a>
 
-	<a onclick="woodBreak.playclip()"><img src="yellowL2.png" id="yellowL2" onclick="changeImage('yellowL2', 'shatterYellowL.png')" height="125px" width ="125px"/></a>
+	<a onclick="changeImage('yellowL2', 'img/shatterYellowL.png')"><img src="img/yellowL2.png" id="yellowL2"  height="125px" width ="125px"/></a>
 
-	<a onclick="mirrorBreak.playclip()"><img src="blueL2.png" id="blueL2" onclick="changeImage('blueL2', 'shatterBlueL.png')" height="125px" width ="125px"/></a>
+	<a onclick="changeImage('blueL2', 'img/shatterBlueL.png')"><img src="img/blueL2.png" id="blueL2"  height="125px" width ="125px"/></a>
 
-	<a onclick="glassBreak.playclip()"><img src="orangeR2.png" id="orangeR2" onclick="changeImage('orangeR2', 'shatterOrangeR.png')" height="100px" width ="100px"/></a>
+	<a onclick="changeImage('orangeR2', 'img/shatterOrangeR.png')"><img src="img/orangeR2.png" id="orangeR2"  height="100px" width ="100px"/></a>
 	</p>
 	<p>
-	<a onclick="woodBreak.playclip()"><img src="greenL1.png" id="greenL1" onclick="changeImage('greenL1', 'shatterGreenL.png')" height="125px" width ="125px"/></a>
+	<a onclick="changeImage('greenL1', 'img/shatterGreenL.png')"><img src="img/greenL1.png" id="greenL1"  height="125px" width ="125px"/></a>
 
-	<a onclick="mirrorBreak.playclip()"><img src="yellowR1.png" id="yellowR1" onclick="changeImage('yellowR1', 'shatterYellowR.png')" height="100px" width ="100px"/></a>
+	<a onclick="changeImage('yellowR1', 'img/shatterYellowR.png')"><img src="img/yellowR1.png" id="yellowR1"  height="100px" width ="100px"/></a>
 
-	<a onclick="glassBreak.playclip()"><img src="blueL3.png" id="blueL3" onclick="changeImage('blueL3', 'shatterBlueL.png')" height="100px" width ="100px"/></a>
+	<a onclick="changeImage('blueL3', 'img/shatterBlueL.png')"><img src="img/blueL3.png" id="blueL3"  height="100px" width ="100px"/></a>
 
-	<a onclick="woodBreak.playclip()"><img src="magentaR2.png" id="magentaR2" onclick="changeImage('magentaR2', 'shatterMagentaR.png')" height="125px" width ="125px"/></a>
+	<a onclick="changeImage('magentaR2', 'img/shatterMagentaR.png')"><img src="img/magentaR2.png" id="magentaR2"  height="125px" width ="125px"/></a>
 
-	<a onclick="mirrorBreak.playclip()"><img src="greenL2.png" id="greenL2" onclick="changeImage('greenL2', 'shatterGreenL.png')" height="100px" width ="100px"/></a>
+	<a onclick="changeImage('greenL2', 'img/shatterGreenL.png')"><img src="img/greenL2.png" id="greenL2"  height="100px" width ="100px"/></a>
 
-	<a onclick="glassBreak.playclip()"><img src="pinkR2.png" id="pinkR2" onclick="changeImage('pinkR2', 'shatterPinkR.png')" height="125px" width ="125px"/></a>
+	<a onclick="changeImage('pinkR2', 'img/shatterPinkR.png')"><img src="img/pinkR2.png" id="pinkR2"  height="125px" width ="125px"/></a>
 	</p>
 	<p>
-	<a onclick="woodBreak.playclip()"><img src="blueR2.png" id="blueR2" onclick="changeImage('blueR2', 'shatterBlueR.png')" height="125px" width ="125px"/></a>
+	<a onclick="changeImage('blueR2', 'img/shatterBlueR.png')"><img src="img/blueR2.png" id="blueR2"  height="125px" width ="125px"/></a>
 
-	<a onclick="mirrorBreak.playclip()"><img src="orangeL1.png" id="orangeL1" onclick="changeImage('orangeL1', 'shatterOrangeL.png')" height="100px" width ="100px"/></a>
+	<a onclick="changeImage('orangeL1', 'img/shatterOrangeL.png')"><img src="img/orangeL1.png" id="orangeL1"  height="100px" width ="100px"/></a>
 
-	<a onclick="glassBreak.playclip()"><img src="pinkL2.png" id="pinkL2" onclick="changeImage('pinkL2', 'shatterPinkL.png')" height="100px" width ="100px"/></a>
+	<a onclick="changeImage('pinkL2', 'img/shatterPinkL.png')"><img src="img/pinkL2.png" id="pinkL2"  height="100px" width ="100px"/></a>
 
-	<a onclick="woodBreak.playclip()"><img src="yellowR2.png" id="yellowR2" onclick="changeImage('yellowR2', 'shatterYellowR.png')" height="125px" width ="125px"/></a>
+	<a onclick="changeImage('yellowR2', 'img/shatterYellowR.png')"><img src="img/yellowR2.png" id="yellowR2"  height="125px" width ="125px"/></a>
 
-	<a onclick="mirrorBreak.playclip()"><img src="blueR1.png" id="blueR1" onclick="changeImage('blueR1', 'shatterBlueR.png')" height="100px" width ="100px"/></a>
+	<a onclick="changeImage('blueR1', 'img/shatterBlueR.png')"><img src="img/blueR1.png" id="blueR1"  height="100px" width ="100px"/></a>
 
-	<a onclick="glassBreak.playclip()"><img src="magentaL2.png" id="magentaL2" onclick="changeImage('magentaL2', 'shatterMagentaL.png')" height="100px" width ="100px"/></a>
+	<a onclick="changeImage('magentaL2', 'img/shatterMagentaL.png')"><img src="img/magentaL2.png" id="magentaL2"  height="100px" width ="100px"/></a>
 	
 	</p>
 	<p>
-	<a onclick="woodBreak.playclip()"><img src="greenR1.png" id="greenR1" onclick="changeImage('greenR1', 'shatterGreenR.png')" height="125px" width ="125px"/></a>
+	<a onclick="changeImage('greenR1', 'img/shatterGreenR.png')"><img src="img/greenR1.png" id="greenR1" height="125px" width ="125px"/></a>
 
-	<a onclick="mirrorBreak.playclip()"><img src="magentaL1.png" id="magentaL1" onclick="changeImage('magentaL1', 'shatterMagentaL.png')" height="125px" width ="125px"/></a>
+	<a onclick="changeImage('magentaL1', 'img/shatterMagentaL.png')"><img src="img/magentaL1.png" id="magentaL1" height="125px" width ="125px"/></a>
 	
-	<a onclick="glassBreak.playclip()"><img src="orangeR1.png" id="orangeR1" onclick="changeImage('orangeR1', 'shatterOrangeR.png')" height="125px" width ="125px"/></a>
+	<a onclick="changeImage('orangeR1', 'img/shatterOrangeR.png')"><img src="img/orangeR1.png" id="orangeR1" height="125px" width ="125px"/></a>
 
-	<a onclick="woodBreak.playclip()"><img src="pinkL1.png" id="pinkL1" onclick="changeImage('pinkL1', 'shatterPinkL.png')" height="125px" width ="125px"/></a>
+	<a onclick="changeImage('pinkL1', 'img/shatterPinkL.png')"><img src="img/pinkL1.png" id="pinkL1" height="125px" width ="125px"/></a>
 	
-	<a onclick="mirrorBreak.playclip()"><img src="yellowL1.png" id="yellowL1" onclick="changeImage('yellowL1', 'shatterYellowL.png')" height="100px" width ="100px"/></a>
+	<a onclick="changeImage('yellowL1', 'img/shatterYellowL.png')"><img src="img/yellowL1.png" id="yellowL1" height="100px" width ="100px"/></a>
 
-	<a onclick="glassBreak.playclip()"><img src="greenR2.png" id="greenR2" onclick="changeImage('greenR2', 'shatterGreenR.png')" height="100px" width ="100px"/></a>
+	<a onclick="changeImage('greenR2', 'img/shatterGreenR.png')"><img src="img/greenR2.png" id="greenR2" height="100px" width ="100px"/></a>
 	</p>
 	<p id="end">
 	</p>

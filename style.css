@@ -1,21 +1,26 @@
 body {
-	background-color: #FA97B8;
-	padding: 0px;
+  background-color: #fa97b8;
+  padding: 0px;
 }
 
 .header {
-width: 100%;
-padding-top: 10px;
-text-align: center;
+  width: 100%;
+  padding-top: 10px;
+  text-align: center;
 }
 
 .container {
-width: 900px;
-height: 630px;
-margin: auto;
-padding: 15px;
-color: #2C3E50;
-background-color:#FFFFFF;
-font-family: 'Ruda', sans-serif;
-text-align: center;
+  width: 900px;
+  height: 630px;
+  margin: auto;
+  padding: 15px;
+  color: #2c3e50;
+  background-color: #ffffff;
+  font-family: "Ruda", sans-serif;
+  text-align: center;
+}
+
+a:hover,
+.again {
+  cursor: pointer;
 }
